@@ -6,8 +6,14 @@ import java.util.TreeSet;
 
 public class Runner {
     public static void main(String[] args) throws Exception {
+        String constance = "https://www.x-kom.pl";
+        String keyWord1 = "notebook";
+        String keyWord2 = "laptop";
 
-        URL oracle = new URL("https://www.otodom.pl/sprzedaz/mieszkanie/sopot/");
+        URL oracle = new URL("https://www.x-kom.pl/g-2/c/2158-laptopy-2-w-1.html");
+
+
+
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(oracle.openStream()));
 
@@ -19,17 +25,18 @@ public class Runner {
         }
         in.close();
         String content = stringBuilder.toString();
-
+        System.out.println(content);
         Set<String> setOfLinks = new TreeSet<>();
 
         for (int i = 0; i < content.length(); i++) {
-            i = content.indexOf("https://www.otodom.pl/pl/oferta/", i);
+            i = content.indexOf("/p/", i);
             if (i < 0) {
                 break;
             }
             String substring = content.substring(i);
             String link = substring.split(".html")[0];
-            setOfLinks.add(link);
+            if (link.contains(keyWord1)||link.contains(keyWord2))
+            setOfLinks.add(constance+link);
         }
         System.out.println(setOfLinks);
     }
