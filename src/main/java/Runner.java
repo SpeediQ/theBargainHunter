@@ -20,7 +20,9 @@ public class Runner {
         String keyWord2 = "laptop";
         List<Item> listOfItems = new ArrayList<>();
 
-        URL oracle = new URL("https://www.x-kom.pl/g-2/c/2158-laptopy-2-w-1.html?per_page=90");
+        String myLink = "https://www.x-kom.pl/g-4/c/1590-smartfony-i-telefony.html";
+
+        URL oracle = new URL(myLink+"?page=1&per_page=90");
 
 
         BufferedReader in = new BufferedReader(
@@ -67,12 +69,14 @@ public class Runner {
             }
 
         }
-        listOfItems.sort(Comparator.comparing(item -> item.getDifference()));
+        listOfItems.sort(Comparator.comparing(Item::getDifference).reversed());
 
         for (Item listOfItem : listOfItems) {
             System.out.println(listOfItem);
         }
         long end = System.currentTimeMillis();
+        System.out.println();
+        System.out.println("Biggest Promotion: "+listOfItems.get(listOfItems.size()-1));
 
 
 
