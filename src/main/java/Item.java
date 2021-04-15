@@ -5,12 +5,14 @@ public class Item {
     int oldPrice;
     int difference;
 
-    public String getIdItem() {
-        return idItem;
-    }
 
-    public void setIdItem(String idItem) {
+
+    public Item(String description, int price, int oldPrice,String idItem ) {
         this.idItem = idItem;
+        this.description = description;
+        this.price = price;
+        this.oldPrice = oldPrice;
+        this.difference = oldPrice - price;
     }
 
     public String getDescription() {
@@ -43,5 +45,17 @@ public class Item {
 
     public void setDifference(int difference) {
         this.difference = difference;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "idItem='" + idItem + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", oldPrice=" + oldPrice +
+                ", difference=" + difference +
+                '}';
     }
 }
