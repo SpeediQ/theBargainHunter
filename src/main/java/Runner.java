@@ -18,21 +18,29 @@ public class Runner {
 
         List<Item> listOfItems = new ArrayList<>();
 
-        String myLink = "https://www.x-kom.pl/g-2/c/1530-notebooki-laptopy-17-3.html";
+        String myLink = "https://www.x-kom.pl/g-2/c/159-laptopy-notebooki-ultrabooki.html";
 
-        URL url = new URL(myLink + "?page=" + 1 + "&per_page=90");
+        int priceMin = 3300;
+        int priceMax = 3500;
+        boolean isOnlyPromotion = true;
 
+        String priceQuery = "&f[price][from]=" + priceMin + "&f[price][to]=" + priceMax;
+        String pageQuery = "?page=" + 1 + "&per_page=90";
+
+
+        URL url = new URL(myLink + pageQuery + priceQuery);
         int maxPage = getMaxPage(url);
 
         for (int i = 1; i <= maxPage; i++) {
-            url = new URL(myLink + "?page=" + i + "&per_page=90");
-            createListOfItemsFromUrl(listOfItems, url);
+            pageQuery = "?page=" + i + "&per_page=90";
+            url = new URL(myLink + pageQuery + priceQuery);
+            createListOfItemsFromUrl(listOfItems, url, isOnlyPromotion);
         }
 
         showTheResult(listOfItems);
         System.out.println(listOfItems.size());
 
-        System.out.println(getSource(new URL("https://www.x-kom.pl/")));
+//        System.out.println(getSource(new URL("https://www.x-kom.pl/")));
 
 
         long end = System.currentTimeMillis();
@@ -48,12 +56,12 @@ public class Runner {
 
     }
 
-    private static void createListOfItemsFromUrl(List<Item> listOfItems, URL oracle) throws IOException {
+    private static void createListOfItemsFromUrl(List<Item> listOfItems, URL oracle, boolean isOnlyPromotion) throws IOException {
         String content = getSource(oracle);
 
         List<String> listOfLinks = getListOfLinks(content);
 
-        addItemsToList(listOfItems, listOfLinks);
+        getListOfItems(listOfItems, listOfLinks, isOnlyPromotion);
 
 
     }
@@ -66,7 +74,7 @@ public class Runner {
         System.out.println("Biggest Promotion: " + listOfItems.get(listOfItems.size() - 1));
     }
 
-    private static void addItemsToList(List<Item> listOfItems, List<String> listOfLinks) {
+    private static void getListOfItems(List<Item> listOfItems, List<String> listOfLinks, boolean isOnlyPromotion) {
         for (String link : listOfLinks) {
 
 
@@ -80,8 +88,14 @@ public class Runner {
                 } else {
                     oldPrice = Integer.parseInt(matcher.group(2));
                 }
-
-                listOfItems.add(new Item(matcher.group(3) + ": " + matcher.group(5), Integer.parseInt(matcher.group(1)), oldPrice, matcher.group(4)));
+                Item currentItem = new Item(matcher.group(3) + " " + matcher.group(5), Integer.parseInt(matcher.group(1)), oldPrice, matcher.group(4));
+                if (isOnlyPromotion == true) {
+                    if (currentItem.isPromotion()) {
+                        listOfItems.add(currentItem);
+                    }
+                } else {
+                    listOfItems.add(currentItem);
+                }
             }
 
         }

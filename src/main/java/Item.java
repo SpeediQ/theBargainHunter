@@ -60,8 +60,8 @@ public class Item {
     @Override
     public String toString() {
         return "Item{" +
-                "idItem='" + idItem + '\'' +
-                ", description='" + description + '\'' +
+                "idItem=" + idItem +
+                ", description=" + description +
                 ", price=" + price +
                 ", oldPrice=" + oldPrice +
                 ", difference=" + difference +
@@ -75,6 +75,8 @@ public class Item {
         } else {
             promotion = true;
         }
+
+
         return promotion;
     }
 }
